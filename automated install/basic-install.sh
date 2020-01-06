@@ -2470,7 +2470,7 @@ main() {
         if is_command sudo ; then
             printf "%b  %b Sudo utility check\\n" "${OVER}"  "${TICK}"
             # Download the install script and run it with admin rights
-            exec curl -sSL https://raw.githubusercontent.com/pi-hole/pi-hole/master/automated%20install/basic-install.sh | sudo bash "$@"
+            exec curl -sSL https://github.com/jerryhopper/pi-hole/blob/master/automated%20install/basic-install.sh | sudo bash "$@"
             exit $?
         # Otherwise,
         else
