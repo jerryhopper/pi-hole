@@ -12,7 +12,7 @@ $serverName = htmlspecialchars($_SERVER["HTTP_HOST"]);
 $serverName = preg_replace('/^\[(.*)\]$/', '${1}', $serverName);
 
 if (!is_file("/etc/pihole/setupVars.conf"))
-  die("[ERROR] File not found: <code>/etc/pihole/setupVars.conf</code>");
+    die("[ERROR] File not found: <code>/etc/pihole/setupVars.conf</code>");
 
 // Get values from setupVars.conf
 $setupVars = parse_ini_file("/etc/pihole/setupVars.conf");
@@ -203,7 +203,7 @@ $phVersion = exec("cd /etc/.pihole/ && git describe --long --tags");
 // Print $execTime on development branches
 // Testing for - is marginally faster than "git rev-parse --abbrev-ref HEAD"
 if (explode("-", $phVersion)[1] != "0")
-  $execTime = microtime(true)-$_SERVER["REQUEST_TIME_FLOAT"];
+    $execTime = microtime(true)-$_SERVER["REQUEST_TIME_FLOAT"];
 
 // Please Note: Text is added via CSS to allow an admin to provide a localised
 // language without the need to edit this file
@@ -218,135 +218,180 @@ setHeader();
 *  This file is copyright under the latest version of the EUPL. -->
 <html>
 <head>
-  <meta charset="UTF-8">
-  <?=$viewPort ?>
-  <meta name="robots" content="noindex,nofollow"/>
-  <meta http-equiv="x-dns-prefetch-control" content="off">
-  <link rel="shortcut icon" href="//pi.hole/admin/img/favicon.png" type="image/x-icon"/>
-  <link rel="stylesheet" href="//pi.hole/pihole/blockingpage.css" type="text/css"/>
-  <title>● <?=$serverName ?></title>
-  <script src="//pi.hole/admin/scripts/vendor/jquery.min.js"></script>
-  <script>
-    window.onload = function () {
-      <?php
-      // Remove href fallback from "Back to safety" button
-      if ($featuredTotal > 0) {
-        echo '$("#bpBack").removeAttr("href");';
+    <meta charset="UTF-8">
+    <?=$viewPort ?>
+    <meta name="robots" content="noindex,nofollow"/>
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+    <link rel="shortcut icon" href="//pi.hole/admin/img/favicon.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="//pi.hole/pihole/blockingpage.css" type="text/css"/>
+    <title>● <?=$serverName ?></title>
+    <script src="//pi.hole/admin/scripts/vendor/jquery.min.js"></script>
+    <script>
+        window.onload = function () {
+            <?php
+            // Remove href fallback from "Back to safety" button
+            if ($featuredTotal > 0) {
+                echo '$("#bpBack").removeAttr("href");';
 
-        // Enable whitelisting if JS is available
-        echo '$("#bpWhitelist").prop("disabled", false);';
+                // Enable whitelisting if JS is available
+                echo '$("#bpWhitelist").prop("disabled", false);';
 
-        // Enable password input if necessary
-        if (!empty($svPasswd)) {
-          echo '$("#bpWLPassword").attr("placeholder", "Password");';
-          echo '$("#bpWLPassword").prop("disabled", false);';
+                // Enable password input if necessary
+                if (!empty($svPasswd)) {
+                    echo '$("#bpWLPassword").attr("placeholder", "Password");';
+                    echo '$("#bpWLPassword").prop("disabled", false);';
+                }
+                // Otherwise hide the input
+                else {
+                    echo '$("#bpWLPassword").hide();';
+                }
+            }
+            ?>
         }
-        // Otherwise hide the input
-        else {
-          echo '$("#bpWLPassword").hide();';
-        }
-      }
-      ?>
-    }
-  </script>
+    </script>
 </head>
 <body id="blockpage"><div id="bpWrapper">
-<header>
-  <h1 id="bpTitle">
-    <a class="title" href="/"><?php //Website Blocked ?></a>
-  </h1>
-  <div class="spc"></div>
+    <header>
+        <h1 id="bpTitle">
+            <a class="title" href="/"><?php //Website Blocked ?></a>
+        </h1>
+        <div class="spc"></div>
 
-  <input id="bpAboutToggle" type="checkbox"/>
-  <div id="bpAbout">
-    <div class="aboutPH">
-      <div class="aboutImg"/></div>
-      <p>Open Source Ad Blocker
-        <small>Designed for Raspberry Pi</small>
-      </p>
-    </div>
-    <div class="aboutLink">
-      <a class="linkPH" href="https://github.com/pi-hole/pi-hole/wiki/What-is-Pi-hole%3F-A-simple-explanation"><?php //About PH ?></a>
-      <?php if (!empty($svEmail)) echo '<a class="linkEmail" href="mailto:'.$svEmail.'"></a>'; ?>
-    </div>
-  </div>
+        <input id="bpAboutToggle" type="checkbox"/>
+        <div id="bpAbout">
+            <div class="aboutPH">
+                <div class="aboutImg"/></div>
+            <p>Open Source Ad Blocker
+                <small>Designed for Raspberry Pi</small>
+            </p>
+        </div>
+        <div class="aboutLink">
+            <a class="linkPH" href="https://github.com/pi-hole/pi-hole/wiki/What-is-Pi-hole%3F-A-simple-explanation"><?php //About PH ?></a>
+            <?php if (!empty($svEmail)) echo '<a class="linkEmail" href="mailto:'.$svEmail.'"></a>'; ?>
+        </div>
+</div>
 
-  <div id="bpAlt">
+<div id="bpAlt">
     <label class="altBtn" for="bpAboutToggle"><?php //Why am I here? ?></label>
-  </div>
+</div>
 </header>
 
 <main>
-  <div id="bpOutput" class="<?=$wlOutputClass ?>"><?=$wlOutput ?></div>
-  <div id="bpBlock">
-    <p class="blockMsg"><?=$serverName ?></p>
-  </div>
-  <?php if(isset($notableFlagClass)) { ?>
-    <div id="bpFlag">
-        <p class="flagMsg <?=$notableFlagClass ?>"></p>
+    <div id="bpOutput" class="<?=$wlOutputClass ?>"><?=$wlOutput ?></div>
+    <div id="bpBlock">
+        <p class="blockMsg"><?=$serverName ?></p>
     </div>
-  <?php } ?>
-  <div id="bpHelpTxt"><?=$bpAskAdmin ?></div>
-  <div id="bpButtons" class="buttons">
-    <a id="bpBack" onclick="javascript:history.back()" href="about:home"></a>
-    <?php if ($featuredTotal > 0) echo '<label id="bpInfo" for="bpMoreToggle"></label>'; ?>
-  </div>
-  <input id="bpMoreToggle" type="checkbox">
-  <div id="bpMoreInfo">
-    <span id="bpFoundIn"><span><?=$featuredTotal ?></span><?=$adlistsCount ?></span>
-    <pre id='bpQueryOutput'><?php if ($featuredTotal > 0) foreach ($queryResults as $num => $value) { echo "<span>[$num]:</span>$adlistsUrls[$num]\n"; } ?></pre>
 
-    <form id="bpWLButtons" class="buttons">
-      <input id="bpWLDomain" type="text" value="<?=$serverName ?>" disabled/>
-      <input id="bpWLPassword" type="password" placeholder="Javascript disabled" disabled/><button id="bpWhitelist" type="button" disabled></button>
-    </form>
-  </div>
+    <?php if(isset($notableFlagClass)) { ?>
+        <div id="bpFlag">
+            <p class="flagMsg <?=$notableFlagClass ?>"></p>
+        </div>
+    <?php } ?>
+
+    <div id="bpHelpTxt"><?=$bpAskAdmin ?></div>
+    <div id="bpButtons" class="buttons">
+        <a id="bpBack" onclick="javascript:history.back()" href="about:home"></a>
+        <?php if ($featuredTotal > 0) echo '<label id="bpInfo" for="bpMoreToggle"></label>'; ?>
+    </div>
+    <input id="bpMoreToggle" type="checkbox">
+    <div id="bpMoreInfo">
+        <span id="bpFoundIn"><span><?=$featuredTotal ?></span><?=$adlistsCount ?></span>
+        <pre id='bpQueryOutput'><?php if ($featuredTotal > 0) foreach ($queryResults as $num => $value) { echo "<span>[$num]:</span>$adlistsUrls[$num]\n"; } ?></pre>
+
+        <form id="bpWLButtons" class="buttons">
+            <input id="bpWLDomain" type="text" value="<?=$serverName ?>" disabled/>
+            <input id="bpWLPassword" type="password" placeholder="Javascript disabled" disabled/><button id="bpWhitelist" type="button" disabled></button>
+        </form>
+    </div>
 </main>
 
 <footer><span><?=date("l g:i A, F dS"); ?>.</span> Pi-hole <?=$phVersion ?> (<?=gethostname()."/".$_SERVER["SERVER_ADDR"]; if (isset($execTime)) printf("/%.2fs", $execTime); ?>)</footer>
 </div>
 
 <script>
-  function add() {
-    $("#bpOutput").removeClass("hidden error exception");
-    $("#bpOutput").addClass("add");
-    var domain = "<?=$serverName ?>";
-    var pw = $("#bpWLPassword");
-    if(domain.length === 0) {
-      return;
-    }
-    $.ajax({
-      url: "/admin/scripts/pi-hole/php/add.php",
-      method: "post",
-      data: {"domain":domain, "list":"white", "pw":pw.val()},
-      success: function(response) {
-        if(response.indexOf("Pi-hole blocking") !== -1) {
-          setTimeout(function(){window.location.reload(1);}, 10000);
-          $("#bpOutput").removeClass("add");
-          $("#bpOutput").addClass("success");
-          $("#bpOutput").html("");
-        } else {
-          $("#bpOutput").removeClass("add");
-          $("#bpOutput").addClass("error");
-          $("#bpOutput").html(""+response+"");
-        }
-      },
-      error: function(jqXHR, exception) {
-        $("#bpOutput").removeClass("add");
-        $("#bpOutput").addClass("exception");
-        $("#bpOutput").html("");
-      }
+
+    /*
+    postData('https://example.com/answer', { answer: 42 }).then((data) => {
+
+        console.log(data); // JSON data parsed by `response.json()` call
     });
-  }
-  <?php if ($featuredTotal > 0) { ?>
+    */
+
+    async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        console.log(response);
+        return await response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    function add() {
+        $("#bpOutput").removeClass("hidden error exception");
+        $("#bpOutput").addClass("add");
+        var domain = "<?=$serverName ?>";
+        var pw = $("#bpWLPassword");
+        if(domain.length === 0) {
+            return;
+        }
+        postData('https://blocklists.surfwijzer.nl/whitelist', { domain: domain }).then((data) => {
+
+            console.log(data); // JSON data parsed by `response.json()` call
+            originaladd();
+        });
+
+    }
+
+    function originaladd() {
+        $("#bpOutput").removeClass("hidden error exception");
+        $("#bpOutput").addClass("add");
+        var domain = "<?=$serverName ?>";
+        var pw = $("#bpWLPassword");
+        if(domain.length === 0) {
+            return;
+        }
+        $.ajax({
+            url: "/admin/scripts/pi-hole/php/add.php",
+            method: "post",
+            data: {"domain":domain, "list":"white", "pw":pw.val()},
+            success: function(response) {
+                if(response.indexOf("Pi-hole blocking") !== -1) {
+                    setTimeout(function(){window.location.reload(1);}, 10000);
+                    $("#bpOutput").removeClass("add");
+                    $("#bpOutput").addClass("success");
+                    $("#bpOutput").html("");
+                } else {
+                    $("#bpOutput").removeClass("add");
+                    $("#bpOutput").addClass("error");
+                    $("#bpOutput").html(""+response+"");
+                }
+            },
+            error: function(jqXHR, exception) {
+                $("#bpOutput").removeClass("add");
+                $("#bpOutput").addClass("exception");
+                $("#bpOutput").html("");
+            }
+        });
+    }
+    <?php if ($featuredTotal > 0) { ?>
     $(document).keypress(function(e) {
         if(e.which === 13 && $("#bpWLPassword").is(":focus")) {
+
             add();
         }
     });
     $("#bpWhitelist").on("click", function() {
         add();
     });
-  <?php } ?>
+    <?php } ?>
 </script>
 </body></html>
