@@ -1805,6 +1805,8 @@ finalExports() {
     if [[ -e "${setupVars}" ]]; then
         # update the variables in the file
         sed -i.update.bak '/PIHOLE_INTERFACE/d;/IPV4_ADDRESS/d;/IPV6_ADDRESS/d;/PIHOLE_DNS_1/d;/PIHOLE_DNS_2/d;/QUERY_LOGGING/d;/INSTALL_WEB_SERVER/d;/INSTALL_WEB_INTERFACE/d;/LIGHTTPD_ENABLED/d;' "${setupVars}"
+    else
+      echo "installationId=${cat /proc/sys/kernel/random/uuid}">/etc/pihole/surfwijzerVars.conf
     fi
     # echo the information to the user
     {
@@ -1818,6 +1820,9 @@ finalExports() {
     echo "INSTALL_WEB_INTERFACE=${INSTALL_WEB_INTERFACE}"
     echo "LIGHTTPD_ENABLED=${LIGHTTPD_ENABLED}"
     }>> "${setupVars}"
+
+    # If the setup variable file exists,
+
 
     # Set the privacy level
     sed -i '/PRIVACYLEVEL/d' "${PI_HOLE_CONFIG_DIR}/pihole-FTL.conf"
