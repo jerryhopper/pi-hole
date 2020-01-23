@@ -246,9 +246,9 @@ if is_command apt-get ; then
     fi
     # Since our install script is so large, we need several other programs to successfully get a machine provisioned
     # These programs are stored in an array so they can be looped through later
-    INSTALLER_DEPS=(apt-utils php dialog debconf dhcpcd5 git ${iproute_pkg} whiptail)
+    INSTALLER_DEPS=(apt-utils dialog debconf dhcpcd5 git ${iproute_pkg} whiptail)
     # Pi-hole itself has several dependencies that also need to be installed
-    PIHOLE_DEPS=(cron curl php dnsutils iputils-ping lsof netcat psmisc sudo unzip wget idn2 sqlite3 libcap2-bin dns-root-data resolvconf libcap2)
+    PIHOLE_DEPS=(cron curl php-cgi dnsutils iputils-ping lsof netcat psmisc sudo unzip wget idn2 sqlite3 libcap2-bin dns-root-data resolvconf libcap2)
     # The Web dashboard has some that also need to be installed
     # It's useful to separate the two since our repos are also setup as "Core" code and "Web" code
     PIHOLE_WEB_DEPS=(lighttpd ${phpVer}-common ${phpVer}-cgi ${phpVer}-${phpSqlite})
@@ -1176,17 +1176,12 @@ chooseBlocklists() {
     # Let user select (or not) blocklists via a checklist
     cmd=(whiptail --separate-output --checklist "Pi-hole relies on third party lists in order to block ads.\\n\\nYou can use the suggestions below, and/or add your own after installation\\n\\nTo deselect any list, use the arrow keys and spacebar" "${r}" "${c}" 6)
     # In an array, show the options available (all off by default):
-    options=(StevenBlack "StevenBlack's Unified Hosts List" off
-        MalwareDom "MalwareDomains" off
-        Cameleon "Cameleon" off
-        DisconTrack "Disconnect.me Tracking" off
-        DisconAd "Disconnect.me Ads" off
-        HostsFile "Hosts-file.net Ads" on
-        SwPorn "Hosts-file.net Porn" on
-        SwProxy "Hosts-file.net Proxies" on
-        SwAds "Hosts-file.net Advertising" on
-        SwTracking "Hosts-file.net Tracking" on
-        Swxxx "Surfwijzer.nl Swxxx" on )
+    options=(
+        SwPorn "Porn" off
+        SwProxy "Proxies" on
+        SwAds "Advertising" on
+        SwTracking "Tracking" on
+        SwSusp "Suspicious" on )
 
     # In a variable, show the choices available; exit if Cancel is selected
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty) || { printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; rm "${adlistFile}" ;exit 1; }
@@ -1202,17 +1197,11 @@ chooseBlocklists() {
 # in installDefaultBlocklists
 appendToListsFile() {
     case $1 in
-        StevenBlack  )  echo "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" >> "${adlistFile}";;
-        MalwareDom   )  echo "https://mirror1.malwaredomains.com/files/justdomains" >> "${adlistFile}";;
-        Cameleon     )  echo "http://sysctl.org/cameleon/hosts" >> "${adlistFile}";;
-        DisconTrack  )  echo "https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt" >> "${adlistFile}";;
-        DisconAd     )  echo "https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt" >> "${adlistFile}";;
-        HostsFile    )  echo "https://hosts-file.net/ad_servers.txt" >> "${adlistFile}";;
         SwPorn       )  echo "https://blocklists.surfwijzer.nl/category/porn" >> "${adlistFile}";;
         SwProxy      )  echo "https://blocklists.surfwijzer.nl/category/proxy" >> "${adlistFile}";;
         SwAds        )  echo "https://blocklists.surfwijzer.nl/category/advertising" >> "${adlistFile}";;
-        SwTracking   )  echo "https://blocklists.surfwijzer.nl/category/porn" >> "${adlistFile}";;
-        Swxxx        )  echo "https://blocklists.surfwijzer.nl/category/porn" >> "${adlistFile}";;
+        SwTracking   )  echo "https://blocklists.surfwijzer.nl/category/malware" >> "${adlistFile}";;
+        SwSusp        )  echo "https://blocklists.surfwijzer.nl/category/suspicious" >> "${adlistFile}";;
     esac
 }
 
@@ -1224,17 +1213,11 @@ installDefaultBlocklists() {
     if [[ -f "${adlistFile}" ]]; then
         return;
     fi
-    appendToListsFile StevenBlack
-    appendToListsFile MalwareDom
-    appendToListsFile Cameleon
-    appendToListsFile DisconTrack
-    appendToListsFile DisconAd
-    appendToListsFile HostsFile
     appendToListsFile SwPorn
     appendToListsFile SwProxy
     appendToListsFile SwAds
     appendToListsFile SwTracking
-    appendToListsFile Swxxx
+    appendToListsFile SwSusp
 }
 
 # Check if /etc/dnsmasq.conf is from pi-hole.  If so replace with an original and install new in .d directory
