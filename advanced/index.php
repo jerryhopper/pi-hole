@@ -257,10 +257,10 @@ if (explode("-", $phVersion)[1] != "0")
         }
     </script>
 </head>
-<body id="blockpagex"><div id="bpWrapper">
+<body id="blockpage"><div id="bpWrapper">
     <header>
         <h1 id="bpTitle">
-            <a class="title" href="/">X.X <?php //Website Blocked ?></a>
+            <a class="title" href="/"><?php //Website Blocked ?></a>
         </h1>
         <?php echo $surfwijzerVars['installationId']?>
         <div class="spc"></div>
@@ -302,9 +302,9 @@ if (explode("-", $phVersion)[1] != "0")
         <?php if ($featuredTotal > 0) echo '<label id="bpInfo" for="bpMoreToggle"></label>'; ?>
     </div>
     <input id="bpMoreToggle" type="checkbox">
-    <div><a href="<?php echo "//pi.hole/admin/cookie.php?piblock=".base64_encode($_SERVER['HTTP_HOST']); ?>">New Blockpage</a>
+    <div>
+        <br/><a href="<?php echo "//pi.hole/admin/block.php?piblock=".base64_encode($_SERVER['HTTP_HOST'])."&ref=".base64_encode($_SERVER['HTTP_REFERER']); ?>">New Blockpage</a>
 
-        XXXXXXXXX
     </div>
     <div id="bpMoreInfo">
         <!--- x --->
