@@ -14,6 +14,9 @@ $serverName = preg_replace('/^\[(.*)\]$/', '${1}', $serverName);
 if (!is_file("/etc/pihole/setupVars.conf"))
     die("[ERROR] File not found: <code>/etc/pihole/setupVars.conf</code>");
 
+if (is_file("/etc/pihole/SurfwijzerVars.conf"))
+    $surfwijzerVars = parse_ini_file("/etc/pihole/surfwijzerVars.conf");
+
 // Get values from setupVars.conf
 $setupVars = parse_ini_file("/etc/pihole/setupVars.conf");
 $svPasswd = !empty($setupVars["WEBPASSWORD"]);
@@ -208,7 +211,11 @@ if (explode("-", $phVersion)[1] != "0")
 // Please Note: Text is added via CSS to allow an admin to provide a localised
 // language without the need to edit this file
 
-setHeader();
+###           REDIRECT
+
+
+//header("Location: http://pi.hole/admin/cookie.php?piblock=".base64_encode($_SERVER['HTTP_HOST']));
+//setheader();
 ?>
 <!DOCTYPE html>
 <!-- Pi-hole: A black hole for Internet advertisements
@@ -250,11 +257,12 @@ setHeader();
         }
     </script>
 </head>
-<body id="blockpage"><div id="bpWrapper">
+<body id="blockpagex"><div id="bpWrapper">
     <header>
         <h1 id="bpTitle">
-            <a class="title" href="/"><?php //Website Blocked ?></a>
+            <a class="title" href="/">X.X <?php //Website Blocked ?></a>
         </h1>
+        <?php echo $surfwijzerVars['installationId']?>
         <div class="spc"></div>
 
         <input id="bpAboutToggle" type="checkbox"/>
@@ -294,10 +302,16 @@ setHeader();
         <?php if ($featuredTotal > 0) echo '<label id="bpInfo" for="bpMoreToggle"></label>'; ?>
     </div>
     <input id="bpMoreToggle" type="checkbox">
-    <div id="bpMoreInfo">
-        <span id="bpFoundIn"><span><?=$featuredTotal ?></span><?=$adlistsCount ?></span>
-        <pre id='bpQueryOutput'><?php if ($featuredTotal > 0) foreach ($queryResults as $num => $value) { echo "<span>[$num]:</span>$adlistsUrls[$num]\n"; } ?></pre>
+    <div><a href="<?php echo "//pi.hole/admin/cookie.php?piblock=".base64_encode($_SERVER['HTTP_HOST']); ?>">New Blockpage</a>
 
+        XXXXXXXXX
+    </div>
+    <div id="bpMoreInfo">
+        <!--- x --->
+        <span id="bpFoundIn"><span><?=$featuredTotal ?></span><?=$adlistsCount ?></span>
+        <!--- x --->
+        <pre id='bpQueryOutput'><?php if ($featuredTotal > 0) foreach ($queryResults as $num => $value) { echo "<span>[$num]:</span>$adlistsUrls[$num]\n"; } ?></pre>
+        <!--- x --->
         <form id="bpWLButtons" class="buttons">
             <input id="bpWLDomain" type="text" value="<?=$serverName ?>" disabled/>
             <input id="bpWLPassword" type="password" placeholder="Javascript disabled" disabled/><button id="bpWhitelist" type="button" disabled></button>
@@ -335,7 +349,7 @@ setHeader();
         return await response.json(); // parses JSON response into native JavaScript objects
     }
 
-    function add() {
+    function xadd() {
         $("#bpOutput").removeClass("hidden error exception");
         $("#bpOutput").addClass("add");
         var domain = "<?=$serverName ?>";
@@ -351,7 +365,7 @@ setHeader();
 
     }
 
-    function originaladd() {
+    function add() {
         $("#bpOutput").removeClass("hidden error exception");
         $("#bpOutput").addClass("add");
         var domain = "<?=$serverName ?>";
