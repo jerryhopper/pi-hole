@@ -14,7 +14,7 @@ $serverName = preg_replace('/^\[(.*)\]$/', '${1}', $serverName);
 if (!is_file("/etc/pihole/setupVars.conf"))
     die("[ERROR] File not found: <code>/etc/pihole/setupVars.conf</code>");
 
-if (is_file("/etc/pihole/SurfwijzerVars.conf"))
+if (is_file("/etc/pihole/surfwijzerVars.conf"))
     $surfwijzerVars = parse_ini_file("/etc/pihole/surfwijzerVars.conf");
 
 // Get values from setupVars.conf
@@ -262,8 +262,8 @@ if (explode("-", $phVersion)[1] != "0")
         <h1 id="bpTitle">
             <a class="title" href="/"><?php //Website Blocked ?></a>
         </h1>
-        <?php echo $surfwijzerVars['installationId']?>
-        <div class="spc"></div>
+
+        <div class="spc"><?php echo $surfwijzerVars['installationId']?></div>
 
         <input id="bpAboutToggle" type="checkbox"/>
         <div id="bpAbout">
