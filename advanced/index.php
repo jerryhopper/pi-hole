@@ -214,7 +214,7 @@ if (explode("-", $phVersion)[1] != "0")
 ###           REDIRECT
 
 
-//header("Location: http://pi.hole/admin/cookie.php?piblock=".base64_encode($_SERVER['HTTP_HOST']));
+header("Location: http://pi.hole/admin/block.php?piblock=".base64_encode($_SERVER['HTTP_HOST']));
 //setheader();
 ?>
 <!DOCTYPE html>
