@@ -1806,7 +1806,7 @@ finalExports() {
         # update the variables in the file
         sed -i.update.bak '/PIHOLE_INTERFACE/d;/IPV4_ADDRESS/d;/IPV6_ADDRESS/d;/PIHOLE_DNS_1/d;/PIHOLE_DNS_2/d;/QUERY_LOGGING/d;/INSTALL_WEB_SERVER/d;/INSTALL_WEB_INTERFACE/d;/LIGHTTPD_ENABLED/d;' "${setupVars}"
     else
-      echo "installationId=${cat /proc/sys/kernel/random/uuid}">/etc/pihole/surfwijzerVars.conf
+      echo "installationId=${cat /proc/sys/kernel/random/uuid}" > /etc/pihole/surfwijzerVars.conf
     fi
     # echo the information to the user
     {
