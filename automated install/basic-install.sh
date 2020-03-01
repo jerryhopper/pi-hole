@@ -1230,12 +1230,14 @@ chooseBlocklists() {
 # in installDefaultBlocklists
 appendToListsFile() {
     case $1 in
-        StevenBlack  )  echo "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" >> "${adlistFile}";;
-        MalwareDom   )  echo "https://mirror1.malwaredomains.com/files/justdomains" >> "${adlistFile}";;
-        Cameleon     )  echo "https://sysctl.org/cameleon/hosts" >> "${adlistFile}";;
-        DisconTrack  )  echo "https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt" >> "${adlistFile}";;
-        DisconAd     )  echo "https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt" >> "${adlistFile}";;
-        HostsFile    )  echo "https://hosts-file.net/ad_servers.txt" >> "${adlistFile}";;
+        SwPorn       )  echo "https://blocklists.surfwijzer.nl/category/porn/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwProxy      )  echo "https://blocklists.surfwijzer.nl/category/proxy/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwAds        )  echo "https://blocklists.surfwijzer.nl/category/advertising/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwTracking   )  echo "https://blocklists.surfwijzer.nl/category/malware/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup1     )  echo "https://blocklists.surfwijzer.nl/category/group1/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup2     )  echo "https://blocklists.surfwijzer.nl/category/group2/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup3     )  echo "https://blocklists.surfwijzer.nl/category/group3/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup4     )  echo "https://blocklists.surfwijzer.nl/category/group4/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
     esac
 }
 
