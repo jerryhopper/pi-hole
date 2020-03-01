@@ -1201,7 +1201,10 @@ appendToListsFile() {
         SwProxy      )  echo "https://blocklists.surfwijzer.nl/category/proxy/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
         SwAds        )  echo "https://blocklists.surfwijzer.nl/category/advertising/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
         SwTracking   )  echo "https://blocklists.surfwijzer.nl/category/malware/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
-        SwSusp        )  echo "https://blocklists.surfwijzer.nl/category/suspicious/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup1     )  echo "https://blocklists.surfwijzer.nl/category/group1/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup2     )  echo "https://blocklists.surfwijzer.nl/category/group2/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup3     )  echo "https://blocklists.surfwijzer.nl/category/group3/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwGroup4     )  echo "https://blocklists.surfwijzer.nl/category/group4/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
     esac
 }
 
