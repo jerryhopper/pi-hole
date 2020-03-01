@@ -1197,11 +1197,11 @@ chooseBlocklists() {
 # in installDefaultBlocklists
 appendToListsFile() {
     case $1 in
-        SwPorn       )  echo "https://blocklists.surfwijzer.nl/category/porn" >> "${adlistFile}";;
-        SwProxy      )  echo "https://blocklists.surfwijzer.nl/category/proxy" >> "${adlistFile}";;
-        SwAds        )  echo "https://blocklists.surfwijzer.nl/category/advertising" >> "${adlistFile}";;
-        SwTracking   )  echo "https://blocklists.surfwijzer.nl/category/malware" >> "${adlistFile}";;
-        SwSusp        )  echo "https://blocklists.surfwijzer.nl/category/suspicious" >> "${adlistFile}";;
+        SwPorn       )  echo "https://blocklists.surfwijzer.nl/category/porn/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwProxy      )  echo "https://blocklists.surfwijzer.nl/category/proxy/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwAds        )  echo "https://blocklists.surfwijzer.nl/category/advertising/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwTracking   )  echo "https://blocklists.surfwijzer.nl/category/malware/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
+        SwSusp        )  echo "https://blocklists.surfwijzer.nl/category/suspicious/$(</etc/blackbox/blackbox.id)" >> "${adlistFile}";;
     esac
 }
 
@@ -1805,11 +1805,6 @@ finalExports() {
     if [[ -e "${setupVars}" ]]; then
         # update the variables in the file
         sed -i.update.bak '/PIHOLE_INTERFACE/d;/IPV4_ADDRESS/d;/IPV6_ADDRESS/d;/PIHOLE_DNS_1/d;/PIHOLE_DNS_2/d;/QUERY_LOGGING/d;/INSTALL_WEB_SERVER/d;/INSTALL_WEB_INTERFACE/d;/LIGHTTPD_ENABLED/d;' "${setupVars}"
-    else
-      SWRAND="$(cat /proc/sys/kernel/random/uuid)"
-      SWDATE="$(date)"
-      echo "installationId=${SWRAND}" > /etc/pihole/surfwijzerVars.conf
-      echo "installationDate=${SWDATE}" >> /etc/pihole/surfwijzerVars.conf
     fi
     # echo the information to the user
     {
